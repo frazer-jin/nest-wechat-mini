@@ -1,24 +1,24 @@
 import { Test } from '@nestjs/testing';
 import { TestingModule } from '@nestjs/testing/testing-module';
-import { PetsService } from './pets.service';
+import { LikesController } from './likes.controller';
 import { expect } from 'chai';
 
-describe('PetsService', () => {
+describe('LikesController', () => {
   let module: TestingModule;
   beforeEach(() => {
     return Test.createTestingModule({
-      providers: [PetsService],
+      controllers: [LikesController],
     })
       .compile()
       .then((compiledModule) => (module = compiledModule));
   });
 
-  let service: PetsService;
+  let controller: LikesController;
   beforeEach(() => {
-    service = module.get(PetsService);
+    controller = module.get(LikesController);
   });
 
   it('should exist', () => {
-    expect(service).to.exist;
+    expect(controller).to.exist;
   });
 });

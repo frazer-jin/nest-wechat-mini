@@ -1,21 +1,21 @@
 import { Test } from '@nestjs/testing';
 import { TestingModule } from '@nestjs/testing/testing-module';
-import { PetsService } from './pets.service';
+import { CommentsService } from './comments.service';
 import { expect } from 'chai';
 
-describe('PetsService', () => {
+describe('CommentsService', () => {
   let module: TestingModule;
   beforeEach(() => {
     return Test.createTestingModule({
-      providers: [PetsService],
+      providers: [CommentsService],
     })
       .compile()
       .then((compiledModule) => (module = compiledModule));
   });
 
-  let service: PetsService;
+  let service: CommentsService;
   beforeEach(() => {
-    service = module.get(PetsService);
+    service = module.get(CommentsService);
   });
 
   it('should exist', () => {

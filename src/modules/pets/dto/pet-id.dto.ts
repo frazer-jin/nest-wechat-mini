@@ -1,11 +1,5 @@
-export class PetIdDto {
+import { PetDto } from './pet.dto';
+
+export class PetIdDto extends PetDto {
   readonly id: number;
-  readonly name: string;
-  readonly gender: string;
-  readonly avatar: string;
-  readonly birthday: string;
-  readonly vaccines: boolean;
-  readonly sterilization: boolean;
-  readonly update_time: number;
-  readonly create_time: number;
 }

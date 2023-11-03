@@ -33,12 +33,9 @@ export class PetsController {
   }
 
   @Put(':id')
-  async update(
-    @Body() updatedBook: PetDto,
-    @Param() params,
-  ): Promise<PetIdDto> {
-    const oldBook = await this.petsService.findById(params.id);
-    return await this.petsService.update(oldBook, updatedBook);
+  async update(@Body() updatedPet: PetDto, @Param() params): Promise<PetIdDto> {
+    const oldPet = await this.petsService.findById(params.id);
+    return await this.petsService.update(oldPet, updatedPet);
   }
 
   @Delete(':id')

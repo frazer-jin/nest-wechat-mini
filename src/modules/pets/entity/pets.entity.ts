@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export class Pets {
@@ -23,9 +29,12 @@ export class Pets {
   @Column({ type: 'tinyint' })
   sterilization: boolean;
 
-  @Column({ type: 'timestamp', update: true })
-  update_time: number;
+  @Column({ type: 'int' })
+  user_id: number;
 
-  @Column({ type: 'timestamp', update: false })
-  create_time: number;
+  @UpdateDateColumn()
+  update_time: Date;
+
+  @CreateDateColumn()
+  create_time: Date;
 }

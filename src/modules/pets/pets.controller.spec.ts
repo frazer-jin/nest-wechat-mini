@@ -3,7 +3,7 @@ import { TestingModule } from '@nestjs/testing/testing-module';
 import { PetsController } from './pets.controller';
 import { expect } from 'chai';
 
-describe('BooksController', () => {
+describe('PetsController', () => {
   let module: TestingModule;
   beforeEach(() => {
     return Test.createTestingModule({
