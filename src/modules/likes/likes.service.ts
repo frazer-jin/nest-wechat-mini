@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Likes } from './entity/likes.entity';
 // DTO
 import { LikeDto } from './dto/like.dto';
+import { DbException } from 'src/exceptions/DbException';
 
 @Injectable()
 export class LikesService {
@@ -17,15 +18,15 @@ export class LikesService {
     try {
       return await this.likeRepository.find({});
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
-  async findById(id: string): Promise<Likes> {
+  async findById(id: number): Promise<Likes> {
     try {
-      return await this.likeRepository.findOneById(id);
+      return await this.likeRepository.findOneBy({ id: id });
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -39,7 +40,7 @@ export class LikesService {
     try {
       return await this.likeRepository.save(newLike);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -53,15 +54,15 @@ export class LikesService {
     try {
       return await this.likeRepository.save(updatedLike);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
     try {
       return await this.likeRepository.delete(id);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 }

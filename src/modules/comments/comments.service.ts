@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Comments } from './entity/comments.entity';
 // DTO
 import { CommentDto } from './dto/comment.dto';
+import { DbException } from 'src/exceptions/DbException';
 
 @Injectable()
 export class CommentsService {
@@ -17,15 +18,15 @@ export class CommentsService {
     try {
       return await this.commentRepository.find({});
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
-  async findById(id: string): Promise<Comments> {
+  async findById(id: number): Promise<Comments> {
     try {
-      return await this.commentRepository.findOneById(id);
+      return await this.commentRepository.findOneBy({ id: id });
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -39,7 +40,7 @@ export class CommentsService {
     try {
       return await this.commentRepository.save(newComment);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -56,15 +57,15 @@ export class CommentsService {
     try {
       return await this.commentRepository.save(updatedComment);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
-  async delete(id: string) {
+  async delete(id: number) {
     try {
       return await this.commentRepository.delete(id);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 }

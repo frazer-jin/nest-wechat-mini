@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Pets } from './entity/pets.entity';
 // DTO
 import { PetDto } from './dto/pet.dto';
+import { DbException } from 'src/exceptions/DbException';
 
 @Injectable()
 export class PetsService {
@@ -17,15 +18,15 @@ export class PetsService {
     try {
       return await this.petRepository.find({});
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
-  async findById(id: string): Promise<Pets> {
+  async findById(id: number): Promise<Pets> {
     try {
-      return await this.petRepository.findOneById(id);
+      return await this.petRepository.findOneBy({ id: id });
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -39,7 +40,7 @@ export class PetsService {
     try {
       return await this.petRepository.save(newPet);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -53,7 +54,7 @@ export class PetsService {
     try {
       return await this.petRepository.save(updatedPet);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -61,7 +62,7 @@ export class PetsService {
     try {
       return await this.petRepository.delete(id);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 }

@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { Topics } from './entity/topics.entity';
 // DTO
 import { TopicDto } from './dto/topic.dto';
+import { DbException } from 'src/exceptions/DbException';
 
 @Injectable()
 export class TopicsService {
@@ -17,15 +18,15 @@ export class TopicsService {
     try {
       return await this.topicRepository.find({});
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
-  async findById(id: string): Promise<Topics> {
+  async findById(id: number): Promise<Topics> {
     try {
-      return await this.topicRepository.findOneById(id);
+      return await this.topicRepository.findOneBy({ id: id });
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -39,7 +40,7 @@ export class TopicsService {
     try {
       return await this.topicRepository.save(newTopic);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -53,7 +54,7 @@ export class TopicsService {
     try {
       return await this.topicRepository.save(updatedTopic);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 
@@ -61,7 +62,7 @@ export class TopicsService {
     try {
       return await this.topicRepository.delete(id);
     } catch (err) {
-      return err;
+      throw new DbException(err);
     }
   }
 }
