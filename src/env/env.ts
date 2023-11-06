@@ -5,4 +5,9 @@ export const ENV = {
     username: 'root',
     password: 'xxx',
   },
+  auth: {
+    jwt: {
+      secret: 'your-secret-key',
+    },
+  },
 };
