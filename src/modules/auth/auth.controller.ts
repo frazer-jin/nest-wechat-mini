@@ -8,10 +8,7 @@ export class AuthController {
 
   @Post('login')
   async login(@Request() req) {
-    const user = await this.authService.validateUser(
-      req.body.username,
-      req.body.password,
-    );
+    const user = await this.authService.getWxUser(req.body.code);
     if (!user) {
       return { message: 'Invalid credentials' };
     }

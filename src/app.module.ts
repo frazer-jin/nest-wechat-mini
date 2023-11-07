@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { HttpModule } from '@nestjs/axios';
 // import { BooksModule } from './modules/books/books.module';
 import { PetsModule } from './modules/pets/pets.module';
 import { Books } from './modules/books/entity/books.entity';
@@ -18,6 +19,8 @@ import { LikesModule } from './modules/likes/likes.module';
 import { AuthService } from './modules/auth/auth.service';
 import { AuthController } from './modules/auth/auth.controller';
 import { JwtStrategy } from './modules/auth/jwt.strategy';
+import { Users } from './modules/users/entity/users.entity';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -30,7 +33,7 @@ import { JwtStrategy } from './modules/auth/jwt.strategy';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: 'nestjs_books_api',
-        entities: [Books, Pets, Topics, Comments, Likes],
+        entities: [Books, Pets, Topics, Comments, Likes, Users],
         synchronize: true,
       }),
       imports: [ConfigModule],
@@ -45,11 +48,13 @@ import { JwtStrategy } from './modules/auth/jwt.strategy';
       inject: [ConfigService],
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
+    HttpModule,
     // BooksModule,
     PetsModule,
     TopicsModule,
     CommentsModule,
     LikesModule,
+    UsersModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtStrategy],
