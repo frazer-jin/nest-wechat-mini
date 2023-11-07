@@ -1,16 +1,16 @@
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
-// Environment
-import { ENV as env } from '../../env/env';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(protected readonly configService: ConfigService) {
+    const jwtSecret = configService.get('JWT_TOKEN'); // 获取JWT令牌并存储在变量中
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: true,
-      secretOrKey: env.auth.jwt.secret,
+      secretOrKey: jwtSecret,
     });
   }
 

@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-// Environment
-import { ENV as env } from './env/env';
 // import { BooksModule } from './modules/books/books.module';
 import { PetsModule } from './modules/pets/pets.module';
 import { Books } from './modules/books/entity/books.entity';
@@ -22,19 +21,28 @@ import { JwtStrategy } from './modules/auth/jwt.strategy';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: env.database.host,
-      port: env.database.port,
-      username: env.database.username,
-      password: env.database.password,
-      database: 'nestjs_books_api',
-      entities: [Books, Pets, Topics, Comments, Likes],
-      synchronize: true,
+    ConfigModule.forRoot(),
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: 'nestjs_books_api',
+        entities: [Books, Pets, Topics, Comments, Likes],
+        synchronize: true,
+      }),
+      imports: [ConfigModule],
+      inject: [ConfigService],
     }),
-    JwtModule.register({
-      secret: env.auth.jwt.secret, // 用于签名 JWT 的密钥
-      signOptions: { expiresIn: '60s' }, // JWT 的过期时间
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_TOKEN'), // 用于签名 JWT 的密钥
+        signOptions: { expiresIn: configService.get<string>('JWT_EXPIRE') }, // JWT 的过期时间
+      }),
+      imports: [ConfigModule],
+      inject: [ConfigService],
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     // BooksModule,
