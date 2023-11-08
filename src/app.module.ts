@@ -36,6 +36,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
         database: 'nestjs_books_api',
         entities: [Books, Pets, Topics, Comments, Likes, Users],
         synchronize: true,
+        logging: true,
       }),
       imports: [ConfigModule],
       inject: [ConfigService],
