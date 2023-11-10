@@ -12,10 +12,16 @@ import { TopicsService } from './topics.service';
 // DTO
 import { TopicDto } from './dto/topic.dto';
 import { TopicIdDto } from './dto/topic-id.dto';
+import { CommentsService } from '../comments/comments.service';
+import { LikesService } from '../likes/likes.service';
 
 @Controller('topics')
 export class TopicsController {
-  constructor(private readonly topicsService: TopicsService) {}
+  constructor(
+    private readonly topicsService: TopicsService,
+    private readonly commentsService: CommentsService,
+    private readonly likesService: LikesService,
+  ) {}
 
   @Get()
   async findAll(): Promise<TopicIdDto[]> {
@@ -24,7 +30,7 @@ export class TopicsController {
 
   @Get(':id')
   async findOneById(@Param() params): Promise<TopicIdDto> {
-    return await this.topicsService.findById(params.id);
+    return (await this.topicsService.findById(params.id)) as TopicIdDto;
   }
 
   @Post()
@@ -38,7 +44,10 @@ export class TopicsController {
     @Param() params,
   ): Promise<TopicIdDto> {
     const oldTopic = await this.topicsService.findById(params.id);
-    return await this.topicsService.update(oldTopic, updatedTopic);
+    return (await this.topicsService.update(
+      oldTopic,
+      updatedTopic,
+    )) as TopicIdDto;
   }
 
   @Delete(':id')
