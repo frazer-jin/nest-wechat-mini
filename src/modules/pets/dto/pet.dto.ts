@@ -5,6 +5,7 @@ export class PetDto {
   readonly birthday: string;
   readonly vaccines: number;
   readonly sterilization: number;
+  readonly user_id: number;
   readonly update_time: Date;
   readonly create_time: Date;
 }
