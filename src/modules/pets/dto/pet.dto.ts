@@ -1,10 +1,10 @@
 export class PetDto {
   readonly name: string;
-  readonly gender: string;
+  readonly gender: number;
   readonly avatar: string;
   readonly birthday: string;
-  readonly vaccines: boolean;
-  readonly sterilization: boolean;
+  readonly vaccines: number;
+  readonly sterilization: number;
   readonly update_time: Date;
   readonly create_time: Date;
 }

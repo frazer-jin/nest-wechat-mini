@@ -14,8 +14,8 @@ export class Pets {
   @Column({ type: 'varchar', length: 32, nullable: false })
   name: string;
 
-  @Column({ type: 'varchar', length: 8, nullable: false })
-  gender: string;
+  @Column({ type: 'tinyint' })
+  gender: number;
 
   @Column({ type: 'text' })
   avatar: string;
@@ -24,10 +24,10 @@ export class Pets {
   birthday: string;
 
   @Column({ type: 'tinyint' })
-  vaccines: boolean;
+  vaccines: number;
 
   @Column({ type: 'tinyint' })
-  sterilization: boolean;
+  sterilization: number;
 
   @Column({ type: 'int' })
   user_id: number;
