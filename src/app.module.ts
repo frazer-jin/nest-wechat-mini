@@ -43,7 +43,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     }),
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_TOKEN'), // 用于签名 JWT 的密钥
+        secret: configService.get<string>('JWT_TOKEN') || 'your-secret-key', // 用于签名 JWT 的密钥
         signOptions: { expiresIn: configService.get<string>('JWT_EXPIRE') }, // JWT 的过期时间
       }),
       imports: [ConfigModule],

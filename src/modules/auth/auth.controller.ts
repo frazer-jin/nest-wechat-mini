@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Header,
+  Headers,
   Post,
   Request,
   UseGuards,
@@ -16,13 +18,18 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() login: LoginDto) {
-    const wxSession = (await this.authService.getWxSession(
-      login.code,
-    )) as WxSessionDto;
-    if (!wxSession) {
-      return { message: 'Invalid credentials' };
-    }
+  async login(
+    @Body() login: LoginDto,
+    @Headers('X-WX-OPENID') openid: string,
+    @Headers('X-WX-UNIONID') unionid: string,
+  ) {
+    // const wxSession = (await this.authService.getWxSession(
+    //   login.code,
+    // )) as WxSessionDto;
+    // if (!wxSession) {
+    //   return { message: 'Invalid credentials' };
+    // }
+    const wxSession = { open_id: openid, union_id: unionid } as WxSessionDto;
     return this.authService.login(login, wxSession);
   }
 
