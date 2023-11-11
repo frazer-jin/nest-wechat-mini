@@ -54,6 +54,7 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
       user_id: user.id,
       user_name: user.nick_name,
+      user_avatar: user.avatar_url,
     };
   }
 }
