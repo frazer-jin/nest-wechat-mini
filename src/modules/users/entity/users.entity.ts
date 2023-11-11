@@ -16,11 +16,11 @@ export class Users {
   @Index('idx_open_id', { unique: true })
   open_id: string;
 
-  @Column({ type: 'varchar', length: 128 })
+  @Column({ type: 'varchar', nullable: true, length: 128 })
   @Index('idx_union_id', { unique: true })
   union_id: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', nullable: true })
   session_key: string;
 
   @Column({ type: 'varchar', nullable: true })
