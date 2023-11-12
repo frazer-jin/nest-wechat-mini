@@ -40,6 +40,8 @@ export class PetsController {
 
   @Delete(':id')
   async delete(@Param() params) {
-    return await this.petsService.delete(params.id);
+    const pet = await this.petsService.findById(params.id);
+    await this.petsService.delete(params.id);
+    return pet;
   }
 }
