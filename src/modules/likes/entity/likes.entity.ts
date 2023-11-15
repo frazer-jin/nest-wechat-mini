@@ -8,13 +8,13 @@ import {
 } from 'typeorm';
 
 @Entity()
-@Index('idx_comment_user', ['comment_id', 'user_id'], { unique: true })
+@Index('idx_topic_user', ['topic_id', 'user_id'], { unique: true })
 export class Likes {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({ type: 'int' })
-  comment_id: number;
+  topic_id: number;
 
   @Column({ type: 'int' })
   user_id: number;

@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PassportModule } from '@nestjs/passport';
 // Controller
 import { TopicsController } from './topics.controller';
 // Service
@@ -10,7 +11,12 @@ import { CommentsModule } from '../comments/comments.module';
 import { LikesModule } from '../likes/likes.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Topics]), CommentsModule, LikesModule],
+  imports: [
+    TypeOrmModule.forFeature([Topics]),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
+    CommentsModule,
+    LikesModule,
+  ],
   controllers: [TopicsController],
   providers: [TopicsService],
   exports: [TopicsService],

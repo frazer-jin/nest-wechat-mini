@@ -6,7 +6,10 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 // Service
 import { TopicsService } from './topics.service';
 // DTO
@@ -34,7 +37,9 @@ export class TopicsController {
   }
 
   @Post()
-  async create(@Body() topic: TopicDto): Promise<TopicDto> {
+  @UseGuards(AuthGuard())
+  async create(@Request() req, @Body() topic: TopicDto): Promise<TopicDto> {
+    topic.user_id = req.user.user_id;
     return (await this.topicsService.insert(topic)) as TopicDto;
   }
 

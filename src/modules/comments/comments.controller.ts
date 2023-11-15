@@ -6,7 +6,10 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 // Service
 import { CommentsService } from './comments.service';
 // DTO
@@ -28,7 +31,12 @@ export class CommentsController {
   }
 
   @Post()
-  async create(@Body() comment: CommentDto): Promise<CommentDto> {
+  @UseGuards(AuthGuard())
+  async create(
+    @Request() req,
+    @Body() comment: CommentDto,
+  ): Promise<CommentDto> {
+    comment.user_id = req.user.user_id;
     return (await this.commentsService.insert(comment)) as CommentDto;
   }
 

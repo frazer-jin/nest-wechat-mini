@@ -6,9 +6,7 @@ import { AppService } from './app.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { HttpModule } from '@nestjs/axios';
-// import { BooksModule } from './modules/books/books.module';
 import { PetsModule } from './modules/pets/pets.module';
-import { Books } from './modules/books/entity/books.entity';
 import { Pets } from './modules/pets/entity/pets.entity';
 import { Topics } from './modules/topics/entity/topics.entity';
 import { TopicsModule } from './modules/topics/topics.module';
@@ -34,7 +32,7 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
         username: configService.get<string>('DB_USERNAME'),
         password: configService.get<string>('DB_PASSWORD'),
         database: 'nestjs_books_api',
-        entities: [Books, Pets, Topics, Comments, Likes, Users],
+        entities: [Pets, Topics, Comments, Likes, Users],
         synchronize: true,
         logging: true,
       }),
@@ -51,7 +49,6 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
     }),
     PassportModule.register({ defaultStrategy: 'jwt' }),
     HttpModule,
-    // BooksModule,
     PetsModule,
     TopicsModule,
     CommentsModule,

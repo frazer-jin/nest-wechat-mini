@@ -6,7 +6,10 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 // Service
 import { PetsService } from './pets.service';
 // DTO
@@ -28,17 +31,21 @@ export class PetsController {
   }
 
   @Post()
-  async create(@Body() pet: PetDto): Promise<PetDto> {
+  @UseGuards(AuthGuard())
+  async create(@Request() req, @Body() pet: PetDto): Promise<PetDto> {
+    pet.user_id = req.user.user_id;
     return (await this.petsService.insert(pet)) as PetDto;
   }
 
   @Put(':id')
+  @UseGuards(AuthGuard())
   async update(@Body() updatedPet: PetDto, @Param() params): Promise<PetIdDto> {
     const oldPet = await this.petsService.findById(params.id);
     return await this.petsService.update(oldPet, updatedPet);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard())
   async delete(@Param() params) {
     const pet = await this.petsService.findById(params.id);
     await this.petsService.delete(params.id);

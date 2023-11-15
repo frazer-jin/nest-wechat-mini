@@ -6,7 +6,10 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 // Service
 import { LikesService } from './likes.service';
 // DTO
@@ -28,7 +31,9 @@ export class LikesController {
   }
 
   @Post()
-  async create(@Body() like: LikeDto): Promise<LikeDto> {
+  @UseGuards(AuthGuard())
+  async create(@Request() req, @Body() like: LikeDto): Promise<LikeDto> {
+    like.user_id = req.user.user_id;
     return (await this.likesService.insert(like)) as LikeDto;
   }
 

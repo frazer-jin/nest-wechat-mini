@@ -19,9 +19,9 @@ export class LoggerMiddleware implements NestMiddleware {
       };
       this.logger.log(
         'request: ' +
-          JSON.stringify(reqt, null, 4) +
+          JSON.stringify(reqt, null) +
           ', response: ' +
-          JSON.stringify(resp, null, 4),
+          JSON.stringify(resp, null),
       );
     });
     // Ends middleware function execution, hence allowing to move on
