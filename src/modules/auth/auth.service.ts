@@ -46,6 +46,14 @@ export class AuthService {
       });
 
       user = await this.userService.insert(newUser);
+    } else {
+      // 更新一下用户信息
+      const newUser = new UserDto();
+
+      Object.keys(login).forEach((key) => {
+        newUser[key] = login[key];
+      });
+      user = await this.userService.update(user, newUser);
     }
 
     // 把用户信息封装成jwt payload
