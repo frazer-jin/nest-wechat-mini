@@ -30,6 +30,29 @@ export class LikesService {
     }
   }
 
+  async findByTopicIdUserId(topic_id: number, user_id: number): Promise<Likes> {
+    try {
+      return await this.likeRepository.findOneBy({
+        topic_id: topic_id,
+        user_id: user_id,
+      });
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
+
+  async findCountByTopicId(topic_id: number): Promise<number> {
+    try {
+      return await this.likeRepository.count({
+        where: {
+          topic_id: topic_id,
+        },
+      });
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
+
   async insert(like: LikeDto): Promise<Likes> {
     const newLike = new Likes();
 

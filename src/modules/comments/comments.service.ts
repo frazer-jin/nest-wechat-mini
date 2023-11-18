@@ -30,6 +30,18 @@ export class CommentsService {
     }
   }
 
+  async findCountByTopicId(topic_id: number): Promise<number> {
+    try {
+      return await this.commentRepository.count({
+        where: {
+          topic_id: topic_id,
+        },
+      });
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
+
   async insert(comment: CommentDto): Promise<Comments> {
     const newComment = new Comments();
 
