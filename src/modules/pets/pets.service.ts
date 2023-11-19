@@ -22,6 +22,14 @@ export class PetsService {
     }
   }
 
+  async findByUserId(user_id: number): Promise<Pets[]> {
+    try {
+      return await this.petRepository.findBy({ user_id: user_id });
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
+
   async findById(id: number): Promise<Pets> {
     try {
       return await this.petRepository.findOneBy({ id: id });

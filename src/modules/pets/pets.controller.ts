@@ -25,6 +25,13 @@ export class PetsController {
     return (await this.petsService.findAll()) as PetIdDto[];
   }
 
+  @Get('mine')
+  @UseGuards(AuthGuard())
+  async findMine(@Request() req): Promise<PetIdDto[]> {
+    const user_id = req.user.user_id;
+    return (await this.petsService.findByUserId(user_id)) as PetIdDto[];
+  }
+
   @Get(':id')
   async findOneById(@Param() params): Promise<PetIdDto> {
     return await this.petsService.findById(params.id);
