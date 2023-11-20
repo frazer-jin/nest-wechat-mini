@@ -4,4 +4,5 @@ export class TopicIdDto extends TopicDto {
   readonly id: number;
   readonly comments_count: number;
   readonly likes_count: number;
+  readonly user_avatar_url: string;
 }

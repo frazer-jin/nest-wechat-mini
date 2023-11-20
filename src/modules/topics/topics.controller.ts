@@ -18,6 +18,7 @@ import { TopicIdDto } from './dto/topic-id.dto';
 import { CommentsService } from '../comments/comments.service';
 import { LikesService } from '../likes/likes.service';
 import { LikeDto } from '../likes/dto/like.dto';
+import { UsersService } from '../users/users.service';
 
 @Controller('topics')
 export class TopicsController {
@@ -25,6 +26,7 @@ export class TopicsController {
     private readonly topicsService: TopicsService,
     private readonly commentsService: CommentsService,
     private readonly likesService: LikesService,
+    private readonly usersService: UsersService,
   ) {}
 
   @Get()
@@ -35,7 +37,10 @@ export class TopicsController {
       const comment_count = await this.commentsService.findCountByTopicId(t.id);
       // like count
       const like_count = await this.likesService.findCountByTopicId(t.id);
-      Object.assign(t, { like_count, comment_count });
+      // user
+      const user = await this.usersService.findById(t.user_id);
+      const user_avatar_url = user?.avatar_url;
+      Object.assign(t, { like_count, comment_count, user_avatar_url });
     }
     return topics as TopicIdDto[];
   }
@@ -49,7 +54,10 @@ export class TopicsController {
     );
     // like count
     const like_count = await this.likesService.findCountByTopicId(params.id);
-    Object.assign(topic, { like_count, comment_count });
+    // user
+    const user = await this.usersService.findById(topic.user_id);
+    const user_avatar_url = user?.avatar_url;
+    Object.assign(topic, { like_count, comment_count, user_avatar_url });
     return topic as TopicIdDto;
   }
 
@@ -72,7 +80,10 @@ export class TopicsController {
     );
     // like count
     const like_count = await this.likesService.findCountByTopicId(params.id);
-    Object.assign(topic, { like_count, comment_count });
+    // user
+    const user = await this.usersService.findById(topic.user_id);
+    const user_avatar_url = user?.avatar_url;
+    Object.assign(topic, { like_count, comment_count, user_avatar_url });
     return topic as TopicIdDto;
   }
 

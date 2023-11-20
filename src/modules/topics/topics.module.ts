@@ -9,6 +9,7 @@ import { TopicsService } from './topics.service';
 import { Topics } from './entity/topics.entity';
 import { CommentsModule } from '../comments/comments.module';
 import { LikesModule } from '../likes/likes.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { LikesModule } from '../likes/likes.module';
     PassportModule.register({ defaultStrategy: 'jwt' }),
     CommentsModule,
     LikesModule,
+    UsersModule,
   ],
   controllers: [TopicsController],
   providers: [TopicsService],
