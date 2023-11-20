@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ILike } from 'typeorm';
 import { Repository } from 'typeorm';
 // Entity
 import { Pets } from './entity/pets.entity';
@@ -17,6 +18,19 @@ export class PetsService {
   async findAll(): Promise<Pets[]> {
     try {
       return await this.petRepository.find({});
+      this.petRepository.find({});
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
+
+  async searchByName(name: string): Promise<Pets[]> {
+    try {
+      return await this.petRepository.find({
+        where: {
+          name: ILike(`%${name}%`),
+        },
+      });
     } catch (err) {
       throw new DbException(err);
     }

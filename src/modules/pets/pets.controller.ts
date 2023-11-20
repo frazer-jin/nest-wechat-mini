@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 // Service
@@ -23,6 +24,12 @@ export class PetsController {
   @Get()
   async findAll(): Promise<PetIdDto[]> {
     return (await this.petsService.findAll()) as PetIdDto[];
+  }
+
+  @Get('keyword')
+  async findSome(@Query() query): Promise<PetIdDto[]> {
+    const keyword = query.q;
+    return (await this.petsService.searchByName(keyword)) as PetIdDto[];
   }
 
   @Get('mine')
