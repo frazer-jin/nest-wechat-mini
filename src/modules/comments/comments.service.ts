@@ -30,6 +30,18 @@ export class CommentsService {
     }
   }
 
+  async findByTopicId(topic_id: number): Promise<Comments[]> {
+    try {
+      return await this.commentRepository.find({
+        where: {
+          topic_id: topic_id,
+        },
+      });
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
+
   async findCountByTopicId(topic_id: number): Promise<number> {
     try {
       return await this.commentRepository.count({

@@ -19,6 +19,7 @@ import { CommentsService } from '../comments/comments.service';
 import { LikesService } from '../likes/likes.service';
 import { LikeDto } from '../likes/dto/like.dto';
 import { UsersService } from '../users/users.service';
+import { CommentIdDto } from '../comments/dto/comment-id.dto';
 
 @Controller('topics')
 export class TopicsController {
@@ -30,35 +31,59 @@ export class TopicsController {
   ) {}
 
   @Get()
-  async findAll(): Promise<TopicIdDto[]> {
+  @UseGuards(AuthGuard())
+  async findAll(@Request() req): Promise<TopicIdDto[]> {
+    const user_id = req.user.user_id;
     const topics = await this.topicsService.findAll();
     for (const t of topics) {
       // comment count
       const comment_count = await this.commentsService.findCountByTopicId(t.id);
       // like count
-      const like_count = await this.likesService.findCountByTopicId(t.id);
+      const liked_user = await this.likesService.findLikedUsersByTopicId(t.id);
+      const like_count = liked_user.length;
+      let liked = false;
+      if (liked_user.includes(user_id)) {
+        liked = true;
+      }
+
       // user
       const user = await this.usersService.findById(t.user_id);
       const user_avatar_url = user?.avatar_url;
-      Object.assign(t, { like_count, comment_count, user_avatar_url });
+      Object.assign(t, { like_count, comment_count, user_avatar_url, liked });
     }
     return topics as TopicIdDto[];
   }
 
   @Get(':id')
-  async findOneById(@Param() params): Promise<TopicIdDto> {
+  @UseGuards(AuthGuard())
+  async findOneById(@Request() req, @Param() params): Promise<TopicIdDto> {
+    const user_id = req.user.user_id;
     const topic = await this.topicsService.findById(params.id);
     // comment count
     const comment_count = await this.commentsService.findCountByTopicId(
       params.id,
     );
     // like count
-    const like_count = await this.likesService.findCountByTopicId(params.id);
+    const liked_user = await this.likesService.findLikedUsersByTopicId(
+      params.id,
+    );
+    const like_count = liked_user.length;
+    let liked = false;
+    if (liked_user.includes(user_id)) {
+      liked = true;
+    }
     // user
     const user = await this.usersService.findById(topic.user_id);
     const user_avatar_url = user?.avatar_url;
-    Object.assign(topic, { like_count, comment_count, user_avatar_url });
+    Object.assign(topic, { like_count, comment_count, user_avatar_url, liked });
     return topic as TopicIdDto;
+  }
+
+  @Get(':id/comments')
+  async findComments(@Param() params): Promise<CommentIdDto[]> {
+    // comment
+    const comments = await this.commentsService.findByTopicId(params.id);
+    return comments as CommentIdDto[];
   }
 
   @Put(':id/like')
@@ -66,7 +91,7 @@ export class TopicsController {
   async toggleTopicLike(@Request() req, @Param() params): Promise<TopicIdDto> {
     const user_id = req.user.user_id;
     const topic_id = params.id;
-    const topic = await this.findOneById(topic_id);
+    const topic = await this.topicsService.findById(topic_id);
     const like = await this.likesService.findByTopicIdUserId(topic_id, user_id);
     if (like) {
       await this.likesService.delete(like.id);
@@ -79,11 +104,18 @@ export class TopicsController {
       params.id,
     );
     // like count
-    const like_count = await this.likesService.findCountByTopicId(params.id);
+    const liked_user = await this.likesService.findLikedUsersByTopicId(
+      params.id,
+    );
+    const like_count = liked_user.length;
+    let liked = false;
+    if (liked_user.includes(user_id)) {
+      liked = true;
+    }
     // user
     const user = await this.usersService.findById(topic.user_id);
     const user_avatar_url = user?.avatar_url;
-    Object.assign(topic, { like_count, comment_count, user_avatar_url });
+    Object.assign(topic, { like_count, comment_count, user_avatar_url, liked });
     return topic as TopicIdDto;
   }
 

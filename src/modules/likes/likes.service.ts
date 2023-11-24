@@ -41,13 +41,19 @@ export class LikesService {
     }
   }
 
-  async findCountByTopicId(topic_id: number): Promise<number> {
+  async findLikedUsersByTopicId(topic_id: number): Promise<number[]> {
     try {
-      return await this.likeRepository.count({
+      const likes = await this.likeRepository.find({
         where: {
           topic_id: topic_id,
         },
+        select: ['user_id'],
       });
+      const liked_users = likes.reduce((acc, like) => {
+        acc.push(like.user_id);
+        return acc;
+      }, []);
+      return liked_users;
     } catch (err) {
       throw new DbException(err);
     }
