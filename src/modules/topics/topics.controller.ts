@@ -83,6 +83,12 @@ export class TopicsController {
   async findComments(@Param() params): Promise<CommentIdDto[]> {
     // comment
     const comments = await this.commentsService.findByTopicId(params.id);
+    for (const c of comments) {
+      // user
+      const user = await this.usersService.findById(c.user_id);
+      const user_avatar_url = user?.avatar_url;
+      Object.assign(c, { user_avatar_url });
+    }
     return comments as CommentIdDto[];
   }
 
