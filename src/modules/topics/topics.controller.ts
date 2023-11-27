@@ -146,6 +146,13 @@ export class TopicsController {
 
   @Delete(':id')
   async delete(@Param() params) {
+    const comments = await this.commentsService.deleteByTopicId(params.id);
+    console.log(
+      'deleted comments belong to topic: ' +
+        params.id +
+        ', result: ' +
+        JSON.stringify(comments),
+    );
     return await this.topicsService.delete(params.id);
   }
 }

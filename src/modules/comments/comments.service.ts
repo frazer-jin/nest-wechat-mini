@@ -92,4 +92,14 @@ export class CommentsService {
       throw new DbException(err);
     }
   }
+
+  async deleteByTopicId(topic_id: number) {
+    try {
+      return await this.commentRepository.delete({
+        topic_id: topic_id,
+      });
+    } catch (err) {
+      throw new DbException(err);
+    }
+  }
 }
