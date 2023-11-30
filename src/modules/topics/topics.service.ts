@@ -14,9 +14,16 @@ export class TopicsService {
     private readonly topicRepository: Repository<Topics>,
   ) {}
 
-  async findAll(): Promise<Topics[]> {
+  async findAll(page: number, limit: number): Promise<Topics[]> {
     try {
-      return await this.topicRepository.find({});
+      const skip = (page - 1) * limit;
+      return await this.topicRepository.find({
+        skip,
+        take: limit,
+        order: {
+          create_time: 'DESC',
+        },
+      });
     } catch (err) {
       throw new DbException(err);
     }

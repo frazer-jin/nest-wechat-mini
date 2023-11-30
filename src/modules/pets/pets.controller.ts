@@ -22,14 +22,28 @@ export class PetsController {
   constructor(private readonly petsService: PetsService) {}
 
   @Get()
-  async findAll(): Promise<PetIdDto[]> {
-    return (await this.petsService.findAll()) as PetIdDto[];
+  async findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 20,
+  ): Promise<PetIdDto[]> {
+    return (await this.petsService.findAll(
+      Math.max(page, 1),
+      limit < 1 ? 20 : limit,
+    )) as PetIdDto[];
   }
 
   @Get('keyword')
-  async findSome(@Query() query): Promise<PetIdDto[]> {
+  async findSome(
+    @Query() query,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 20,
+  ): Promise<PetIdDto[]> {
     const keyword = query.q;
-    return (await this.petsService.searchByName(keyword)) as PetIdDto[];
+    return (await this.petsService.searchByName(
+      keyword,
+      Math.max(page, 1),
+      limit < 1 ? 20 : limit,
+    )) as PetIdDto[];
   }
 
   @Get('mine')

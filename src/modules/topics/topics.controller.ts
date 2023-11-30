@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 // Service
@@ -32,9 +33,16 @@ export class TopicsController {
 
   @Get()
   @UseGuards(AuthGuard())
-  async findAll(@Request() req): Promise<TopicIdDto[]> {
+  async findAll(
+    @Request() req,
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 20,
+  ): Promise<TopicIdDto[]> {
     const user_id = req.user.user_id;
-    const topics = await this.topicsService.findAll();
+    const topics = await this.topicsService.findAll(
+      Math.max(page, 1),
+      limit < 1 ? 20 : limit,
+    );
     for (const t of topics) {
       // comment count
       const comment_count = await this.commentsService.findCountByTopicId(t.id);

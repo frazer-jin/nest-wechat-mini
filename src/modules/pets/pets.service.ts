@@ -15,20 +15,37 @@ export class PetsService {
     private readonly petRepository: Repository<Pets>,
   ) {}
 
-  async findAll(): Promise<Pets[]> {
+  async findAll(page: number, limit: number): Promise<Pets[]> {
     try {
-      return await this.petRepository.find({});
+      const skip = (page - 1) * limit;
+      return await this.petRepository.find({
+        skip,
+        take: limit,
+        order: {
+          create_time: 'DESC',
+        },
+      });
       this.petRepository.find({});
     } catch (err) {
       throw new DbException(err);
     }
   }
 
-  async searchByName(name: string): Promise<Pets[]> {
+  async searchByName(
+    name: string,
+    page: number,
+    limit: number,
+  ): Promise<Pets[]> {
     try {
+      const skip = (page - 1) * limit;
       return await this.petRepository.find({
         where: {
           name: ILike(`%${name}%`),
+        },
+        skip,
+        take: limit,
+        order: {
+          create_time: 'DESC',
         },
       });
     } catch (err) {
