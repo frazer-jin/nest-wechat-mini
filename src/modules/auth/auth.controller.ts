@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Get,
-  Header,
   Headers,
   Post,
   Request,
@@ -29,8 +28,8 @@ export class AuthController {
     // if (!wxSession) {
     //   return { message: 'Invalid credentials' };
     // }
-    const wxSession = { open_id: openid, union_id: unionid } as WxSessionDto;
-    return this.authService.login(login, wxSession);
+    const wx_session = { open_id: openid, union_id: unionid } as WxSessionDto;
+    return this.authService.login(login, wx_session);
   }
 
   @UseGuards(AuthGuard())
