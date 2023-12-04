@@ -2,15 +2,15 @@ import { Test } from '@nestjs/testing';
 import { TestingModule } from '@nestjs/testing/testing-module';
 import { UsersService } from './users.service';
 import { expect } from 'chai';
+import { RootTestModule } from '../../root-test.module';
 
 describe('UsersService', () => {
   let module: TestingModule;
-  beforeEach(() => {
-    return Test.createTestingModule({
-      providers: [UsersService],
-    })
-      .compile()
-      .then((compiledModule) => (module = compiledModule));
+
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
+      imports: [RootTestModule],
+    }).compile();
   });
 
   let service: UsersService;

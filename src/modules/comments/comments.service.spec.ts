@@ -1,21 +1,20 @@
-import { Test } from '@nestjs/testing';
-import { TestingModule } from '@nestjs/testing/testing-module';
+import { Test, TestingModule } from '@nestjs/testing';
 import { CommentsService } from './comments.service';
 import { expect } from 'chai';
+import { RootTestModule } from '../../root-test.module';
 
 describe('CommentsService', () => {
   let module: TestingModule;
-  beforeEach(() => {
-    return Test.createTestingModule({
-      providers: [CommentsService],
-    })
-      .compile()
-      .then((compiledModule) => (module = compiledModule));
+
+  beforeAll(async () => {
+    module = await Test.createTestingModule({
+      imports: [RootTestModule],
+    }).compile();
   });
 
   let service: CommentsService;
   beforeEach(() => {
-    service = module.get(CommentsService);
+    service = module.get<CommentsService>(CommentsService);
   });
 
   it('should exist', () => {

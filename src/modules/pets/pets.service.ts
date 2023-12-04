@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import { Pets } from './entity/pets.entity';
 // DTO
 import { PetDto } from './dto/pet.dto';
-import { DbException } from 'src/exceptions/DbException';
+import { DbException } from '../../exceptions/DbException';
 
 @Injectable()
 export class PetsService {

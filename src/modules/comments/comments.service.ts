@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Comments } from './entity/comments.entity';
 // DTO
 import { CommentDto } from './dto/comment.dto';
-import { DbException } from 'src/exceptions/DbException';
+import { DbException } from '../../exceptions/DbException';
 
 @Injectable()
 export class CommentsService {

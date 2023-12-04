@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Topics } from './entity/topics.entity';
 // DTO
 import { TopicDto } from './dto/topic.dto';
-import { DbException } from 'src/exceptions/DbException';
+import { DbException } from '../../exceptions/DbException';
 
 @Injectable()
 export class TopicsService {

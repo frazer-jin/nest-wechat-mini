@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Users } from './entity/users.entity';
 // DTO
 import { UserDto } from './dto/user.dto';
-import { DbException } from 'src/exceptions/DbException';
+import { DbException } from '../../exceptions/DbException';
 import { UserUpdateDto } from './dto/user-update.dto';
 
 @Injectable()

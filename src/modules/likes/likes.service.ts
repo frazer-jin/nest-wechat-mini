@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { Likes } from './entity/likes.entity';
 // DTO
 import { LikeDto } from './dto/like.dto';
-import { DbException } from 'src/exceptions/DbException';
+import { DbException } from '../../exceptions/DbException';
 
 @Injectable()
 export class LikesService {
