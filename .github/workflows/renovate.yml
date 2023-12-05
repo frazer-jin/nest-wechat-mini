@@ -8,6 +8,9 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - uses: renovatebot/renovate@latest
+      - name: Checkout
+        uses: actions/checkout@v3.6.0
+      - name: Self-hosted Renovate
+        uses: renovatebot/github-action@v39.1.4
         with:
           token: ${{ secrets.test }}
